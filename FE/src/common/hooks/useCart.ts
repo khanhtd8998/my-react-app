@@ -77,7 +77,7 @@ import { useEffect, useState } from 'react'
 
 const useCart = () => {
     const queryClient = useQueryClient()
-    const token = localStorage.getItem('accessToken')
+    // const token = localStorage.getItem('accessToken')
     const { isLogin } = useAuth()
     const [count, setCount] = useState(0)
     const { data: cartData } = useQuery({

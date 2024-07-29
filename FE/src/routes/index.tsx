@@ -18,6 +18,7 @@ import FormDefault from "@/pages/(dashboard)/product/_components/FormDefault";
 import AddProductPage from "@/pages/(dashboard)/product/add/page";
 import EditProductPage from "@/pages/(dashboard)/product/edit/page";
 import Signup from "@/pages/(website)/(auth)/Signup";
+import DoneOrderPage from "@/pages/(website)/done/page";
 
 const Router = () => {
     return (
@@ -33,6 +34,7 @@ const Router = () => {
                     <Route path="cart" element={<CartPage />} />
                     <Route path="order" element={<OrderPage />} />
                 </Route>
+                <Route path="order-done" element={<DoneOrderPage />} />
                 <Route path="signin" element={<Signin />} />
                 <Route path="signup" element={<Signup />} />
                 <Route

@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [user, setUser] = useState<User | null>(null)
     const [messageApi, contextHolder] = message.useMessage()
     const token = localStorage.getItem('accessToken')
-    const queryClient = useQueryClient()
+    // const queryClient = useQueryClient()
     useQuery({
         queryKey: ["user"],
         queryFn: async () => {
@@ -74,8 +74,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setIsLogin(false)
         setUser(null)
         nav('/')
-        // queryClient.invalidateQueries({ queryKey: ["user"] })
-        // queryClient.invalidateQueries({ queryKey: ["carts"] })
     }
     return (
         <AuthContext.Provider value={{ isLogin, setIsLogin, login, contextHolder, user, handleLogout }}>

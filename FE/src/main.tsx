@@ -5,7 +5,6 @@ import './styles/style.scss'
 import './global.css'
 import { BrowserRouter } from 'react-router-dom'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
-import { ToastProvider } from './components/ui/toast.tsx'
 import { AuthProvider } from './contexts/AuthContext.tsx'
 
 const queryClient = new QueryClient()
@@ -14,7 +13,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <QueryClientProvider client={queryClient}>
             <BrowserRouter>
                 <AuthProvider>
+                    {/* <Context.Provider value={contextValue}> */}
                     <App />
+                    {/* </Context.Provider> */}
                 </AuthProvider>
             </BrowserRouter>
         </QueryClientProvider>
