@@ -4,7 +4,7 @@ import { message } from "antd";
 
 type OrderPayload = {
     name?: string;
-    phone?: number;
+    phone?: string;
     address?: string
     payment?: string
 }

@@ -89,6 +89,30 @@ export const getCartByUserId = async (req, res) => {
         return res.status(StatusCodes.BAD_REQUEST).json({ error: "Internal Server Error" });
     }
 };
+//update số lượng giỏ hàng
+export const updateQuantityCart = async (req, res) => {
+    try {
+        const currentCart = req.currentCart
+        const { productId, quantity } = req.body
+
+        const productIndex = currentCart.products.findIndex((item) => item.product.toString() === productId)
+        if (productIndex !== -1) {
+            currentCart.products[productIndex].quantity = quantity
+        }
+        const cart = await Cart.findOneAndUpdate(
+            currentCart._id,
+            { products: currentCart.products },
+            { new: true }
+        )
+        return res.status(StatusCodes.OK).json({
+            status: 'success',
+            data: cart,
+            message: 'Updated quantity successfully',
+        })
+    } catch (error) {
+        return res.status(StatusCodes.BAD_REQUEST).json({ error: "Internal Server Error" });
+    }
+}
 // Xóa 1 sản phẩm trong giỏ hàng thuộc 1 user
 export const removeItemFromCart = async (req, res) => {
     try {
@@ -114,8 +138,6 @@ export const removeItemFromCart = async (req, res) => {
 export const removeCart = async (req, res) => {
     try {
         const id = req.params.id
-        const currentCart = req.currentCart
-
         const data = await Cart.findByIdAndUpdate({ _id: id }, { $set: { products: [] } }, { new: true })
         return res.status(StatusCodes.OK).json({
             status: 'success',

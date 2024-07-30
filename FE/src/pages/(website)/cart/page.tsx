@@ -3,14 +3,21 @@
 import useCart from "@/common/hooks/useCart"
 import { Cart } from "@/common/types/cart"
 import { useAuth } from "@/contexts/AuthContext"
-import { Button, Popconfirm, Space, Table } from "antd"
+import { Button, Form, Input, InputNumber, Popconfirm, Space, Table } from "antd"
 import Typography from "antd/es/typography/Typography"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { DeleteOutlined } from '@ant-design/icons'
 import { Trash2 } from "lucide-react"
+import type { InputNumberProps } from 'antd';
+import { useState } from "react"
 
+type FieldType = {
+    quantity: number
+}
 const CartPage = () => {
+    const nav = useNavigate()
     const { isLogin } = useAuth()
+    const [form] = Form.useForm()
     const { cartData, count, handleDeleteItemCart, handleDeleteCart } = useCart()
     const newCartData = cartData?.data?.products
     const dataSource = newCartData?.map((item: any) => {
@@ -19,34 +26,73 @@ const CartPage = () => {
             key: item.productId
         }
     })
+
+    const onChange: InputNumberProps['onChange'] = (value: any) => {
+        console.log('changed', value);
+    };
+
+
+    const handleOrder = () => {
+        form.validateFields()
+            .then((values) => {
+                nav('/order')
+            })
+            .catch((errorInfo) => {
+                console.log('Validation Failed:', errorInfo);
+            });
+    }
     const columns = [
         {
-            action: 'Hình ảnh',
+            title: 'Ảnh',
             dataIndex: 'image',
             key: 'image',
             render: (text: string) => {
                 return (
-                    <img className="border rounded w-12 h-12 p-1" src={text} alt="" />
+                    <img className="border rounded w-12 h-12 p-1" src={text} alt={`Image ${text}`} />
 
                 )
             }
         },
         {
-            action: 'Tên sản phẩm',
+            title: 'Tên sản phẩm',
             dataIndex: 'name',
             key: 'name',
         },
 
         {
-            action: 'Số lượng',
+            title: 'Số lượng',
             dataIndex: 'quantity',
             key: 'quantity',
-            render: (value: number) => {
-                return <p>{value}</p>
+            render: (_: any, item: any) => {
+                return (
+                    <>
+                        <p className="opacity-0"> {item.quantity}</p>
+
+                        <Form form={form} initialValues={{ quantity: item.quantity }} className="flex items-center justify-center">
+                            <Form.Item<FieldType>
+                                name="quantity"
+                                rules={[{ required: true, message: 'Please input your quantity!' }]}
+                            >
+                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                    {/* <Button onClick={onDecrement}>-</Button> */}
+                                    <InputNumber
+                                        min={1}
+                                        max={10}
+                                        // value={quantity}
+                                        defaultValue={item.quantity}
+                                        onChange={onChange}
+                                        style={{ margin: '0 10px' }}
+                                    />
+                                    {/* <Button onClick={onIncrement}>+</Button> */}
+                                </div>
+                            </Form.Item>
+                        </Form>
+                    </>
+                )
             }
         },
         {
-            action: 'Giá',
+            title: 'Giá',
             dataIndex: 'price',
             key: 'price',
         },
@@ -57,6 +103,7 @@ const CartPage = () => {
         },
         {
             action: 'Tổng',
+            key: "action",
             render: (_: any, item: any) => {
                 return <p>{item?.price * item?.quantity}</p>
             }
@@ -64,13 +111,11 @@ const CartPage = () => {
         {
             className: 'text-center size-5',
             action: 'Xóa',
-            dataIndex: 'price',
-            key: 'price',
+            key: 'action',
             render: (_: any, item: any) => {
                 return (
                     <>
                         <Popconfirm
-                            // title={`Xóa sản phẩm ${item?.products?.name}`}
                             title={`Xóa ${item?.name} khỏi giỏ hàng `}
                             description="Bạn chắc chắn muốn xóa sản phẩm này?"
                             onConfirm={() => handleDeleteItemCart(item?.productId!)}
@@ -104,7 +149,7 @@ const CartPage = () => {
                         <div>
                             <span className="text-xl flex mb-[1px] items-center justify-between pb-6 border-b">Your Cart
                                 {
-                                    count != 0 && (
+                                    count > 1 && (
                                         <Popconfirm
                                             // title={`Xóa sản phẩm ${item?.products?.name}`}
                                             title={`Xoát toàn bộ giỏ hàng`}
@@ -148,21 +193,21 @@ const CartPage = () => {
                                             </div>
                                             {/* *** */}
                                             <div className="my-3">
-                                                <span role="progressbar" aria-labelledby="ProgressLabel" aria-valuenow={60} className="block rounded-full bg-[#F4F4F4]">
-                                                    <span className="block h-[7px] rounded-full bg-[#17AF26]" style={{ width: '58%' }} />
+                                                <span role="progressbar" aria-labelledby="ProgressLabel" aria-valuenow={50} className="block rounded-full bg-[#F4F4F4]">
+                                                    <span className="block h-[7px] rounded-full bg-[#17AF26]" style={{ width: '100%' }} />
                                                 </span>
                                             </div>
                                             {/* *** */}
                                             <span className="flex mt-0.5 gap-x-[3px] items-center font-medium text-sm text-[#717378]">Get Free <p className="text-[#1A1E26]">
                                                 Shipping</p> for orders over <p className="text-[#EB2606]">$100.00</p></span>
                                             <a href="" className="font-semibold text-sm underline cursor-pointer my-1 tracking-[-0.1px]">Continue Shopping</a>
-                                            <Link to={'/order'}>
-                                                <button className="bg-[#17AF26] px-10 h-14 rounded-[100px] text-white flex my-[13px] gap-x-4 place-items-center justify-center">
-                                                    <span>Checkout</span>
-                                                    |
-                                                    <span>${cartData?.data.totalPrice}</span>
-                                                </button>
-                                            </Link>
+                                            {/* <Link to={'/order'}> */}
+                                            <button onClick={() => handleOrder()} className="bg-[#17AF26] hover:bg-green-600 px-10 h-14 rounded-[100px] text-white flex my-[13px] gap-x-4 place-items-center justify-center">
+                                                <span>Checkout</span>
+                                                |
+                                                <span>${cartData?.data.totalPrice}</span>
+                                            </button>
+                                            {/* </Link> */}
                                             {/* payment */}
                                             <div className="flex flex-col gap-y-4 border-t mt-[3px] pt-[22px]">
                                                 <span className="tracking-[0.8px] text-[#717378] text-xs">SECURE PAYMENTS PROVIDED BY</span>

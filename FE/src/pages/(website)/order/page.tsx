@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 type FieldType = {
     name?: string;
-    phone?: number;
+    phone?: string;
     address?: string
     payment?: string
 };
@@ -32,7 +32,6 @@ const OrderPage = () => {
             })
             .catch((errorInfo) => {
                 console.log('Validation Failed:', errorInfo);
-                // Optional: Show an error message if needed
             });
     }
     const handleCreateOrder = (data: FieldType) => {
@@ -86,7 +85,7 @@ const OrderPage = () => {
                                         name="phone"
                                         rules={[{ required: true, message: 'Please input your phone!' }]}
                                     >
-                                        <InputNumber />
+                                        <Input />
                                     </Form.Item>
 
                                     <Form.Item<FieldType>
@@ -129,9 +128,9 @@ const OrderPage = () => {
                                         >
                                             {
                                                 cartData?.data?.products?.map((item: any) => (
-                                                    <div key={item?.id} className="flex justify-between my-2 py-2">
-                                                        <h3>{item?.name}</h3>
-                                                        <p>{item.quantity} sản phẩm</p>
+                                                    <div key={item?.productId} className="flex justify-between my-2 py-2">
+                                                        <h3 className="w-[15em]">{item?.name}</h3>
+                                                        <p >{item.quantity} sản phẩm</p>
                                                         <img className="size-12 rounded-sm" src={item?.image} alt="" />
                                                     </div>
                                                 ))

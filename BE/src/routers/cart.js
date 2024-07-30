@@ -5,6 +5,7 @@ import {
     getCartMiddleware,
     removeCart,
     removeItemFromCart,
+    updateQuantityCart,
     // decreaseProductQuantity,
     // increaseProductQuantity,
     // removeFromCart,
@@ -16,6 +17,7 @@ const cartRouter = Router();
 cartRouter.use('/', authMiddleware, getCartMiddleware)
 cartRouter.get("/carts", getCartByUserId);
 cartRouter.post("/carts/add-to-cart", addItemToCart);
+cartRouter.patch("/carts/update-quantity", updateQuantityCart);
 cartRouter.delete("/carts/remove-from-cart/:id", removeItemFromCart);
 cartRouter.delete("/carts/remove/:id", removeCart);
 

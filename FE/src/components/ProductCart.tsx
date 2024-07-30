@@ -3,6 +3,7 @@ import instance from '@/configs/axios'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { message } from 'antd'
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 type Props = {
     product: Product
@@ -25,7 +26,6 @@ const ProductCart = ({ product }: Props) => {
                 messageApi.open({
                     type: 'error',
                     content: `Cần có tài khoản để thêm sản phẩm vào giỏ hàng`,
-                    // content: `${error.response.data.error}`,
                 })
             }
         },
@@ -48,17 +48,18 @@ const ProductCart = ({ product }: Props) => {
             {/* img */}
             {contextHolder}
             <div className="relative group w-full lg:h-[240px] mb:h-[160px] bg-[#F4F4F4] rounded-xl grid place-items-center">
-                <img className="lg:w-[164px] mb:w-[120px] lg:h-[164px] mb:h-[120px]" src={product?.image} alt="" />
-                {/* <button className="absolute scale-0 group-hover:scale-100 group-hover:translate-y-0 -translate-y-[200%] duration-200 z-[2] lg:w-[152px] mb:w-[136px] lg:h-[64px]  
-            mb:h-[48px] rounded-[100px] border-none bg-[#1A1E2630] text-sm text-white backdrop-blur-md">Out
-                                        Of Stock</button> */}
+                <Link to={`/products/${product._id}`}>
+                    <img className="lg:w-[164px] mb:w-[120px] lg:h-[164px] mb:h-[120px]" src={product?.image} alt="" />
+                </Link>
                 <section className="hidden absolute top-0 left-0 bg-[#F2BC1B] px-3 py-1.5 text-white">$60 ounce</section>
             </div>
             {/* about */}
             <div className="w-full flex flex-col justify-between gap-y-4 items-center">
                 <div className="flex flex-col gap-y-2 items-center">
                     <strong className="uppercase font-light lg:text-sm mb:text-xs text-center text-[#9D9EA2]">{product?.category?.name}</strong>
-                    <strong className="lg:text-lg text-center mb:text-base font-normal text-[#1A1E26]">{product.name}</strong>
+                    <Link to={`/products/${product._id}`}>
+                        <strong className="lg:text-lg text-center mb:text-base font-normal text-[#1A1E26]">{product.name}</strong>
+                    </Link>
                     <section className="lg:w-[163px] mb:w-[131px] h-[21px] mb:translate-y-0.5 lg:translate-y-0 *:lg:text-sm *:mb:text-xs flex justify-between items-start">
                         <div className="flex items-start">
                             <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-star">

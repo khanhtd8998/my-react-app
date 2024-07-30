@@ -16,7 +16,7 @@ export const getAllProducts = async (req, res) => {
     try {
         const result = await Product.find().populate({
             path: "category",
-            select: "name",
+            select: "name _id",
         })
         // if (result.length === 0) throw new Error("No products found");
 
@@ -28,7 +28,10 @@ export const getAllProducts = async (req, res) => {
 
 export const getProductById = async (req, res) => {
     try {
-        const product = await Product.findById(req.params.id);
+        const product = await Product.findById(req.params.id).populate({
+            path: "category",
+            select: "name _id",
+        });
         if (product.length === 0)
             return res
                 .status(StatusCodes.NOT_FOUND)
