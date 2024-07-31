@@ -22,7 +22,7 @@ const Header = () => {
         {
             key: '2',
             label: (
-                <Link target="_blank" rel="noopener noreferrer" to={`/`}>
+                <Link target="_blank" rel="noopener noreferrer" to={`order/history`}>
                     Quản lý đơn hàng
                 </Link>
             ),

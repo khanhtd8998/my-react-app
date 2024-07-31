@@ -19,6 +19,7 @@ import AddProductPage from "@/pages/(dashboard)/product/add/page";
 import EditProductPage from "@/pages/(dashboard)/product/edit/page";
 import Signup from "@/pages/(website)/(auth)/Signup";
 import DoneOrderPage from "@/pages/(website)/done/page";
+import OrderHistory from "@/pages/(website)/order/_components/OrderHistory";
 
 const Router = () => {
     return (
@@ -33,6 +34,7 @@ const Router = () => {
                     <Route path="contact" element={<ContactPage />} />
                     <Route path="cart" element={<CartPage />} />
                     <Route path="order" element={<OrderPage />} />
+                    <Route path="order/history" element={<OrderHistory />} />
                 </Route>
                 <Route path="order-done" element={<DoneOrderPage />} />
                 <Route path="signin" element={<Signin />} />

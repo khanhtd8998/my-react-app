@@ -1,13 +1,6 @@
 import mongoose from "mongoose";
 
 // Hàm để sinh orderNumber
-const generateOrderNumber = () => {
-    const timestamp = Date.now().toString();
-    const random = Math.floor(Math.random() * 1000)
-        .toString()
-        .padStart(3, "0");
-    return `${timestamp}-${random}`;
-};
 
 const orderItemSchema = new mongoose.Schema({
     _id: {
@@ -69,6 +62,9 @@ const orderSchema = new mongoose.Schema({
         enum: ["pending", "confirmed", "shipped", "delivered"],
         default: "pending",
     },
+    orderNumber: {
+        type: String
+    },
     createdAt: {
         type: Date,
         default: Date.now,
@@ -85,8 +81,5 @@ orderSchema.virtual('totalOrder').get(function () {
         return total + (item.quantity * item.price);
     }, 0);
 });
-orderSchema.virtual("orderNumber").get(function () {
-    const data = generateOrderNumber()
-    return data
-})
+
 export default mongoose.model("Order", orderSchema);

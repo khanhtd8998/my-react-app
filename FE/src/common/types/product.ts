@@ -15,6 +15,7 @@ export type Product = {
     discount?: number
     featured?: boolean
     countInStock?: number
+    creatAt?: string
 }
 export type ProductResponse = Omit<Product, 'category'> & {
     category: Category;
