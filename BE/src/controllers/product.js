@@ -1,5 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import Product from "../models/product";
+import Cart from "../models/cart";
 
 export const create = async (req, res) => {
     try {
@@ -41,10 +42,19 @@ export const getProductById = async (req, res) => {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error });
     }
 };
+
+
 export const deleteProductById = async (req, res) => {
     try {
         const product = await Product.findByIdAndDelete(req.params.id);
-        return res.status(StatusCodes.OK).json(product);
+        if (!product) {
+            return res.status(StatusCodes.NOT_FOUND).json({ error: "Product not found" });
+        }
+        await Cart.updateMany(
+            {},
+            { $pull: { products: { product: req.params.id } } }
+        );
+        return res.status(StatusCodes.OK).json({ success: true, data: product });
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error });
     }

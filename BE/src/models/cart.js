@@ -48,4 +48,5 @@ cartSchema.virtual('totalPrice').get(function () {
     }, 0);
 });
 
-export default mongoose.model("Cart", cartSchema);
+const Cart = mongoose.models.Cart || mongoose.model('Cart', cartSchema);
+export default Cart;

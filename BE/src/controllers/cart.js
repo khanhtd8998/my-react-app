@@ -1,9 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import Cart from "../models/cart";
 
-export const findProductInCart = (cart, productId) => {
-    return cart.products.find((item) => item.productId.toString() === productId);
-};
 
 export const getCartMiddleware = async (req, res, next) => {
     try {
