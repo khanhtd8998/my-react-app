@@ -2,7 +2,7 @@ import { Category } from "@/common/types/category";
 import { getAllCategories } from "@/services/category";
 import { addProduct } from "@/services/product";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Button, Checkbox, Form, Input, message, Select, Space, Typography } from "antd"
+import { Button, Checkbox, Form, Input, InputNumber, message, Select, Space, Typography } from "antd"
 import TextArea from "antd/es/input/TextArea";
 import { ForwardIcon } from "lucide-react"
 import { useState } from "react";
@@ -14,7 +14,7 @@ type FieldType = {
     slug: string;
     discount: number;
     countInStock: number;
-    category: string;
+    category: { _id: string; name: string; };
     image: string,
     description: string
 };
@@ -40,9 +40,8 @@ const AddProductPage = () => {
 
     const { mutate } = useMutation({
         mutationFn: async (data: FieldType) => {
-            // const res = await addProduct(data)
-            // return res
-            console.log({ ...data, category: isIdSelected });
+            const res = await addProduct({ ...data, category: isIdSelected })
+            return res
         },
         onSuccess: () => {
             form.resetFields()
@@ -52,14 +51,7 @@ const AddProductPage = () => {
             })
         }
     })
-    // const hanldeSubmitForm = () => {
-    //     const newData = {
-    //         ...form1Data,
-    //         category: isIdSelected,
-    //     }
-    //     // mutate(newData)
-    //     console.log(newData);
-    // }
+
     return (
         <>
             {contextHolder}
@@ -87,8 +79,6 @@ const AddProductPage = () => {
                     // onValuesChange={handleForm1Change}
                     name="basic"
                     layout="vertical"
-                    // labelCol={{ span: 8 }}
-                    // wrapperCol={{ span: 16 }}
                     style={{ width: "100%" }}
                     initialValues={{ remember: true }}
                     onFinish={(formData) => { mutate(formData) }}
@@ -111,30 +101,31 @@ const AddProductPage = () => {
                                     <Input />
                                 </Form.Item>
                             </div>
-                            <div className="cols-span-1">
+                            <div className="grid grid-cols-3">
                                 <Form.Item<FieldType>
                                     label="Giá"
                                     name="price"
                                     rules={[{ required: true, message: 'Không để trống thông tin' }]}
                                 >
-                                    <Input />
+                                    <InputNumber type="number" />
                                 </Form.Item>
                                 <Form.Item<FieldType>
                                     label="Giảm giá"
                                     name="discount"
                                     rules={[{ required: true, message: 'Không để trống thông tin' }]}
                                 >
-                                    <Input />
+                                    <InputNumber />
                                 </Form.Item>
-                            </div>
-                            <div className="grid grid-cols-2 space-x-2">
                                 <Form.Item<FieldType>
-                                    label="Số lương"
+                                    label="Số lượng"
                                     name="countInStock"
                                     rules={[{ required: true, message: 'Không để trống thông tin' }]}
                                 >
-                                    <Input />
+                                    <InputNumber type="number" />
                                 </Form.Item>
+                            </div>
+                            <div className="grid grid-cols-1 space-x-2">
+
                                 <Form.Item<FieldType>
                                     label="Ảnh sản phẩm"
                                     name="image"

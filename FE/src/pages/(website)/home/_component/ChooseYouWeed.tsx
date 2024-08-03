@@ -31,7 +31,7 @@ const ChooseYouWeed = ({ products }: Props) => {
                 </div>
                 <div className="grid lg:py-16 lg:mt-[30px] pb:my-10 lg:grid-cols-[276px_276px_276px_276px] mb:grid-cols-[159px_159px] border-t justify-between lg:gap-y-8 mb:gap-y-[29px] mb:pt-10">
                     {
-                        products.map((product) => (
+                        products?.map((product) => (
                             <ProductCart key={product._id} product={product} />
                         ))
                     }

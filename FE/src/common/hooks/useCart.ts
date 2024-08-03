@@ -80,7 +80,7 @@ const useCart = () => {
     // const token = localStorage.getItem('accessToken')
     const { isLogin } = useAuth()
     const [count, setCount] = useState(0)
-    const { data: cartData } = useQuery({
+    const { data: cartData, isLoading } = useQuery({
         queryKey: ["carts"],
         queryFn: async () => {
             try {
@@ -136,7 +136,7 @@ const useCart = () => {
         },
     })
     return {
-        cartData,
+        cartData, isLoading,
         count, setCount,
         handleDeleteItemCart,
         handleDeleteCart

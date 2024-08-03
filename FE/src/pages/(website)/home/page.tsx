@@ -7,15 +7,22 @@ import ChooseYouWeed from './_component/ChooseYouWeed'
 import { useProduct } from '@/common/hooks/useProductMutation'
 import { useQuery } from '@tanstack/react-query'
 import instance from '@/configs/axios'
+import { Button, Spin } from 'antd'
+import { useEffect, useState } from 'react'
+import Loading from '@/components/Loading'
 
 const HomePage = () => {
     const { data, isLoading } = useProduct()
     const { contextHolder } = useAuth()
-    if (isLoading) return <div>Loading...</div>;
+
+    if (isLoading) return <Loading></Loading>;
     return (
         <>
             {contextHolder}
+
             <div>
+                {/* <Button onClick={showLoader}>Show fullscreen</Button> */}
+
                 {/* <Banner /> */}
                 {/* <Services /> */}
                 {/* <BestDispensary /> */}

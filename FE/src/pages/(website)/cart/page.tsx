@@ -10,6 +10,7 @@ import { DeleteOutlined } from '@ant-design/icons'
 import { Trash2 } from "lucide-react"
 import type { InputNumberProps } from 'antd';
 import { useState } from "react"
+import Loading from "@/components/Loading"
 
 type FieldType = {
     quantity: number
@@ -18,7 +19,7 @@ const CartPage = () => {
     const nav = useNavigate()
     const { isLogin } = useAuth()
     const [form] = Form.useForm()
-    const { cartData, count, handleDeleteItemCart, handleDeleteCart } = useCart()
+    const { cartData, isLoading, count, handleDeleteItemCart, handleDeleteCart } = useCart()
     const newCartData = cartData?.data?.products
     const dataSource = newCartData?.map((item: any) => {
         return {
@@ -130,6 +131,7 @@ const CartPage = () => {
         }
 
     ]
+    if (isLoading) return <Loading></Loading>
     return (
         <>
             {
